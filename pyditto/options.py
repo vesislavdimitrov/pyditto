@@ -37,7 +37,6 @@ class DittoOptions:
     bom = DittoOption(lambda v: ["--bom", v] if v else [])
     verbose = DittoOption({True: "-V"})
     zlib_compression_level = DittoOption(lambda v: ["--zlibCompressionLevel", str(v)] if v is not None else [])
-    password = DittoOption(lambda v: ["--password", v] if v else [])
     keep_parent = DittoOption({True: "--keepParent"}, archive_only=True)
     sequester_rsrc = DittoOption({True: "--sequesterRsrc"}, archive_only=True)
     zip_format = DittoOption({True: "-k"})
@@ -59,4 +58,3 @@ class DittoOptions:
                 continue
             flags.extend(opt.to_flag(value))
         return flags
-        

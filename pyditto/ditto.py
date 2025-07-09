@@ -17,12 +17,6 @@ class PyDitto:
     def archive(src: str, archive_path: str, options: Optional[DittoOptions] = None) -> None:
         opts = options or DittoOptions()
         args = ["-c"]
-        if opts.zip_format:
-            args.append("-k")
-        if opts.sequester_rsrc:
-            args.append("--sequesterRsrc")
-        if opts.keep_parent:
-            args.append("--keepParent")
         args += opts.to_flags(for_mode="archive")
         args += [src, archive_path]
         run_ditto(args)
@@ -31,8 +25,6 @@ class PyDitto:
     def extract(archive_path: str, dst: str, options: Optional[DittoOptions] = None) -> None:
         opts = options or DittoOptions()
         args = ["-x"]
-        if opts.zip_format:
-            args.append("-k")
         args += opts.to_flags(for_mode="extract")
         args += [archive_path, dst]
         run_ditto(args)

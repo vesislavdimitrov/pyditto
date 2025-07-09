@@ -68,11 +68,6 @@ class TestDittoOptions(unittest.TestCase):
         self.assertIn('--zlibCompressionLevel', opts.to_flags())
         self.assertIn('9', opts.to_flags())
 
-    def test_password(self):
-        opts = DittoOptions(password='secret')
-        self.assertIn('--password', opts.to_flags())
-        self.assertIn('secret', opts.to_flags())
-
     def test_keep_parent(self):
         opts = DittoOptions(keep_parent=True)
         self.assertIn('--keepParent', opts.to_flags(for_mode="archive"))

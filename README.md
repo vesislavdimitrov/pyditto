@@ -1,6 +1,6 @@
 # pyditto
 
-A Python library for programmatic access to the macOS `ditto` tool.
+A Python library for programmatic access to the macOS [`ditto`](https://ss64.com/mac/ditto.html) tool.
 
 Copy directory hierarchies, create and extract archives. Ditto can preserve ownership / permissions, HFS resource forks and file / folder metadata. Ditto will automatically create the destination folder if it doesn’t yet exist, if the destination does exist and contains files, then ditto will merge them.
 
@@ -37,7 +37,8 @@ extract('archive.zip', 'dst')
 - `arch`: Thin universal binaries to the specified architecture
 - `bom`: Copy only files present in the specified BOM
 - `zlib_compression_level`: Set ZIP compression level (0-9)
-- `password`: Password for extracting encrypted ZIP archives
+
+*Note: This is not an exhaustive list of all possible `ditto` arguments. More options may be added in the future. If you need a specific flag, feel free to open a PR*
 
 ## Requirements
 - macOS with `ditto` available in $PATH

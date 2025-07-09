@@ -41,7 +41,6 @@ class TestPyDitto(unittest.TestCase):
             bom='test.bom',
             verbose=True,
             zlib_compression_level=9,
-            password='secret',
             keep_parent=True,
             sequester_rsrc=True,
             zip_format=True
@@ -52,7 +51,7 @@ class TestPyDitto(unittest.TestCase):
         expected_flags = [
             '--rsrc', '--extattr', '--qtn', '--acl', '--nocache', '--hfsCompression',
             '--preserveHFSCompression', '--arch', 'x86_64', '--bom', 'test.bom',
-            '-V', '--zlibCompressionLevel', '9', '--password', 'secret',
+            '-V', '--zlibCompressionLevel', '9',
             '-k'
         ]
         for flag in expected_flags:
@@ -74,7 +73,6 @@ class TestPyDitto(unittest.TestCase):
             bom='archive.bom',
             verbose=True,
             zlib_compression_level=5,
-            password='pw',
             keep_parent=True,
             sequester_rsrc=True,
             zip_format=True
@@ -85,8 +83,7 @@ class TestPyDitto(unittest.TestCase):
         expected_flags = [
             '--norsrc', '--noextattr', '--noqtn', '--noacl', '--nocache', '--nohfsCompression',
             '--nopreserveHFSCompression', '--arch', 'arm64', '--bom', 'archive.bom',
-            '-V', '--zlibCompressionLevel', '5', '--password', 'pw',
-            '--keepParent', '--sequesterRsrc', '-k'
+            '-V', '--zlibCompressionLevel', '5', '--keepParent', '--sequesterRsrc', '-k'
         ]
         for flag in expected_flags:
             self.assertIn(flag, args)
@@ -96,14 +93,13 @@ class TestPyDitto(unittest.TestCase):
         opts = DittoOptions(
             zip_format=True,
             verbose=True,
-            password='pw',
             keep_parent=True,
             sequester_rsrc=True
         )
         extract('archive.zip', 'dst', opts)
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        expected_flags = ['-x', '-k', '-V', '--password', 'pw', 'archive.zip', 'dst']
+        expected_flags = ['-x', '-k', '-V', 'archive.zip', 'dst']
         for flag in expected_flags:
             self.assertIn(flag, args)
         self.assertNotIn('--keepParent', args)
