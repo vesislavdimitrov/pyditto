@@ -18,15 +18,11 @@ class DittoOption:
         setattr(obj, self.private_name, value)
 
     def _add_prefix(self, flag):
-        if not flag:
+        if not flag or not isinstance(flag, str):
             return flag
-        if isinstance(flag, str):
-            if flag.startswith('-'):
-                return flag
-            if len(flag) == 1:
-                return '-' + flag
-            return '--' + flag
-        return flag
+        if flag.startswith('-'):
+            return flag
+        return f'-{flag}' if len(flag) == 1 else f'--{flag}'
 
     def to_flag(self, value):
         if callable(self.flag_logic):
