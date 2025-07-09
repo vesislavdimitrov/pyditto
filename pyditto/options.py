@@ -8,17 +8,17 @@ class DittoOptions:
         extattr: Optional[bool] = None,
         qtn: Optional[bool] = None,
         acl: Optional[bool] = None,
-        nocache: bool = False,
+        nocache: Optional[bool] = None,
         hfs_compression: Optional[bool] = None,
         preserve_hfs_compression: Optional[bool] = None,
         arch: Optional[str] = None,
         bom: Optional[str] = None,
-        verbose: bool = False,
+        verbose: Optional[bool] = None,
         zlib_compression_level: Optional[int] = None,
         password: Optional[str] = None,
-        keep_parent: bool = True,
-        sequester_rsrc: bool = True,
-        zip_format: bool = True
+        keep_parent: Optional[bool] = None,
+        sequester_rsrc: Optional[bool] = None,
+        zip_format: Optional[bool] = None
     ):
         self.preserve_rsrc = preserve_rsrc
         self.extattr = extattr

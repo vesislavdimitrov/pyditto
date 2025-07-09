@@ -6,7 +6,7 @@ class TestDittoOptions(unittest.TestCase):
         opts = DittoOptions()
         self.assertEqual(
             set(opts.to_flags()),
-            set(['-k'])
+            set()
         )
 
     def test_preserve_rsrc(self):
