@@ -1,0 +1,6 @@
+[project]
+name = "pyditto"
+version = "1.0.0"
+description = "Pythonic interface to the macOS ditto tool."
+authors = [ { name = "Vesislav Dimitrov", email = "vesislavdimitrov@gmail.com" } ]
+requires-python = ">=3.7"
