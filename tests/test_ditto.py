@@ -8,24 +8,21 @@ class TestPyDitto(unittest.TestCase):
         PyDitto.copy('src', 'dst')
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        for expected in ['src', 'dst']:
-            self.assertIn(expected, args)
+        self.assertEqual(args, ['src', 'dst'])
 
     @patch('pyditto.ditto.run_ditto')
     def test_archive_default(self, mock_run):
         PyDitto.archive('src', 'archive.zip')
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        for expected in ['-c', 'src', 'archive.zip']:
-            self.assertIn(expected, args)
+        self.assertEqual(args, ['-c', 'src', 'archive.zip'])
 
     @patch('pyditto.ditto.run_ditto')
     def test_extract_default(self, mock_run):
         PyDitto.extract('archive.zip', 'dst')
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        for expected in ['-x', 'archive.zip', 'dst']:
-            self.assertIn(expected, args)
+        self.assertEqual(args, ['-x', 'archive.zip', 'dst'])
 
     @patch('pyditto.ditto.run_ditto')
     def test_all_options_copy(self, mock_run):
@@ -48,16 +45,13 @@ class TestPyDitto(unittest.TestCase):
         copy('src', 'dst', opts)
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        expected_flags = [
+        expected_args = [
             '--rsrc', '--extattr', '--qtn', '--acl', '--nocache', '--hfsCompression',
             '--preserveHFSCompression', '--arch', 'x86_64', '--bom', 'test.bom',
             '-V', '--zlibCompressionLevel', '9',
-            '-k'
+            '-k', 'src', 'dst'
         ]
-        for flag in expected_flags:
-            self.assertIn(flag, args)
-        self.assertNotIn('--keepParent', args)
-        self.assertNotIn('--sequesterRsrc', args)
+        self.assertEqual(args, expected_args)
 
     @patch('pyditto.ditto.run_ditto')
     def test_all_options_archive(self, mock_run):
@@ -80,13 +74,13 @@ class TestPyDitto(unittest.TestCase):
         archive('src', 'archive.zip', opts)
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        expected_flags = [
-            '--norsrc', '--noextattr', '--noqtn', '--noacl', '--nocache', '--nohfsCompression',
+        expected_args = [
+            '-c', '--norsrc', '--noextattr', '--noqtn', '--noacl', '--nocache', '--nohfsCompression',
             '--nopreserveHFSCompression', '--arch', 'arm64', '--bom', 'archive.bom',
-            '-V', '--zlibCompressionLevel', '5', '--keepParent', '--sequesterRsrc', '-k'
+            '-V', '--zlibCompressionLevel', '5', '--keepParent', '--sequesterRsrc', '-k',
+            'src', 'archive.zip'
         ]
-        for flag in expected_flags:
-            self.assertIn(flag, args)
+        self.assertEqual(args, expected_args)
 
     @patch('pyditto.ditto.run_ditto')
     def test_all_options_extract(self, mock_run):
@@ -99,9 +93,8 @@ class TestPyDitto(unittest.TestCase):
         extract('archive.zip', 'dst', opts)
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
-        expected_flags = ['-x', '-k', '-V', 'archive.zip', 'dst']
-        for flag in expected_flags:
-            self.assertIn(flag, args)
+        expected_args = ['-x', '-V', '-k', 'archive.zip', 'dst']
+        self.assertEqual(args, expected_args)
         self.assertNotIn('--keepParent', args)
         self.assertNotIn('--sequesterRsrc', args)
 
