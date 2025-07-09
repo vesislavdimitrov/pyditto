@@ -6,7 +6,7 @@ class TestDittoOptions(unittest.TestCase):
         opts = DittoOptions()
         self.assertEqual(
             set(opts.to_flags()),
-            set(['--keepParent', '--sequesterRsrc', '-k'])
+            set(['-k'])
         )
 
     def test_preserve_rsrc(self):
@@ -75,11 +75,15 @@ class TestDittoOptions(unittest.TestCase):
 
     def test_keep_parent(self):
         opts = DittoOptions(keep_parent=True)
-        self.assertIn('--keepParent', opts.to_flags())
+        self.assertIn('--keepParent', opts.to_flags(for_mode="archive"))
+        self.assertNotIn('--keepParent', opts.to_flags(for_mode="copy"))
+        self.assertNotIn('--keepParent', opts.to_flags(for_mode="extract"))
 
     def test_sequester_rsrc(self):
         opts = DittoOptions(sequester_rsrc=True)
-        self.assertIn('--sequesterRsrc', opts.to_flags())
+        self.assertIn('--sequesterRsrc', opts.to_flags(for_mode="archive"))
+        self.assertNotIn('--sequesterRsrc', opts.to_flags(for_mode="copy"))
+        self.assertNotIn('--sequesterRsrc', opts.to_flags(for_mode="extract"))
 
     def test_zip_format(self):
         opts = DittoOptions(zip_format=True)

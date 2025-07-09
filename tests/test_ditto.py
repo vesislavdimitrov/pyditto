@@ -53,10 +53,12 @@ class TestPyDitto(unittest.TestCase):
             '--rsrc', '--extattr', '--qtn', '--acl', '--nocache', '--hfsCompression',
             '--preserveHFSCompression', '--arch', 'x86_64', '--bom', 'test.bom',
             '-V', '--zlibCompressionLevel', '9', '--password', 'secret',
-            '--keepParent', '--sequesterRsrc', '-k'
+            '-k'
         ]
         for flag in expected_flags:
             self.assertIn(flag, args)
+        self.assertNotIn('--keepParent', args)
+        self.assertNotIn('--sequesterRsrc', args)
 
     @patch('pyditto.ditto.run_ditto')
     def test_all_options_archive(self, mock_run):
@@ -95,6 +97,8 @@ class TestPyDitto(unittest.TestCase):
             zip_format=True,
             verbose=True,
             password='pw',
+            keep_parent=True,
+            sequester_rsrc=True
         )
         extract('archive.zip', 'dst', opts)
         mock_run.assert_called_once()
@@ -102,6 +106,8 @@ class TestPyDitto(unittest.TestCase):
         expected_flags = ['-x', '-k', '-V', '--password', 'pw', 'archive.zip', 'dst']
         for flag in expected_flags:
             self.assertIn(flag, args)
+        self.assertNotIn('--keepParent', args)
+        self.assertNotIn('--sequesterRsrc', args)
 
     def test_missing_src_copy(self):
         with self.assertRaises(TypeError):

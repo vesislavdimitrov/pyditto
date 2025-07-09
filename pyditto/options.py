@@ -37,7 +37,28 @@ class DittoOptions:
         self.zip_format = zip_format
 
     def to_flags(self, for_mode: str = "copy") -> List[str]:
-        flag_map: Dict[str, Any] = {
+        flags: List[str] = []
+        for key, value in self.__dict__.items():
+            if key in ("keep_parent", "sequester_rsrc"):
+                flags.extend(self._archive_only_flag(key, value, for_mode))
+            else:
+                flags.extend(self._generic_flag(key, value))
+        if self.verbose:
+            flags.append("-V")
+        return flags
+
+    def _archive_only_flag(self, key: str, value: Any, for_mode: str) -> list:
+        archive_only_flags = {
+            "keep_parent": {True: "--keepParent"},
+            "sequester_rsrc": {True: "--sequesterRsrc"}
+        }
+        if key in archive_only_flags and for_mode == "archive":
+            flag = archive_only_flags[key].get(value)
+            return [flag] if flag else []
+        return []
+
+    def _generic_flag(self, key: str, value: Any) -> list:
+        flag_map = {
             "preserve_rsrc": {True: "--rsrc", False: "--norsrc"},
             "extattr": {True: "--extattr", False: "--noextattr"},
             "qtn": {True: "--qtn", False: "--noqtn"},
@@ -49,19 +70,12 @@ class DittoOptions:
             "bom": lambda v: ["--bom", v] if v else [],
             "zlib_compression_level": lambda v: ["--zlibCompressionLevel", str(v)] if v is not None else [],
             "password": lambda v: ["--password", v] if v else [],
-            "keep_parent": {True: "--keepParent"},
-            "sequester_rsrc": {True: "--sequesterRsrc"},
             "zip_format": {True: "-k"}
         }
-        flags: List[str] = []
-        for key, value in self.__dict__.items():
-            if key in ("arch", "bom", "zlib_compression_level", "password"):
-                flags.extend(flag_map[key](value))
-                continue
-            flag_entry = flag_map.get(key)
-            if isinstance(flag_entry, dict):
-                flag = flag_entry.get(value)
-                flag and flags.append(flag)
-        if self.verbose:
-            flags.append("-V")
-        return flags
+        if key in ("arch", "bom", "zlib_compression_level", "password"):
+            return flag_map[key](value)
+        flag_entry = flag_map.get(key)
+        if isinstance(flag_entry, dict):
+            flag = flag_entry.get(value)
+            return [flag] if flag else []
+        return []
