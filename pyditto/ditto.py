@@ -16,17 +16,13 @@ class PyDitto:
     @staticmethod
     def archive(src: str, archive_path: str, options: Optional[DittoOptions] = None) -> None:
         opts = options or DittoOptions()
-        args = ["-c"]
-        args += opts.to_flags(for_mode='archive')
-        args += [src, archive_path]
+        args = ['-c', *opts.to_flags(for_mode='archive'), src, archive_path]
         run_ditto(args)
 
     @staticmethod
     def extract(archive_path: str, dst: str, options: Optional[DittoOptions] = None) -> None:
         opts = options or DittoOptions()
-        args = ["-x"]
-        args += opts.to_flags(for_mode='extract')
-        args += [archive_path, dst]
+        args = ['-x', *opts.to_flags(for_mode='extract'), archive_path, dst]
         run_ditto(args)
 
 copy = PyDitto.copy

@@ -46,10 +46,7 @@ class TestPyDitto(unittest.TestCase):
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         expected_args = [
-            '--rsrc', '--extattr', '--qtn', '--acl', '--nocache', '--hfsCompression',
-            '--preserveHFSCompression', '--arch', 'x86_64', '--bom', 'test.bom',
-            '-V', '--zlibCompressionLevel', '9',
-            '-k', 'src', 'dst'
+            '--rsrc', '--extattr', '--qtn', '--acl', '--nocache', '-V', '-k', '--hfsCompression', '--preserveHFSCompression', '--arch', 'x86_64', '--bom', 'test.bom', '--zlibCompressionLevel', '9', 'src', 'dst'
         ]
         self.assertEqual(args, expected_args)
 
@@ -75,10 +72,7 @@ class TestPyDitto(unittest.TestCase):
         mock_run.assert_called_once()
         args = mock_run.call_args[0][0]
         expected_args = [
-            '-c', '--norsrc', '--noextattr', '--noqtn', '--noacl', '--nocache', '--nohfsCompression',
-            '--nopreserveHFSCompression', '--arch', 'arm64', '--bom', 'archive.bom',
-            '-V', '--zlibCompressionLevel', '5', '--keepParent', '--sequesterRsrc', '-k',
-            'src', 'archive.zip'
+            '-c', '--norsrc', '--noextattr', '--noqtn', '--noacl', '--nocache', '-V', '-k', '--nohfsCompression', '--nopreserveHFSCompression', '--arch', 'arm64', '--bom', 'archive.bom', '--zlibCompressionLevel', '5', '--keepParent', '--sequesterRsrc', 'src', 'archive.zip'
         ]
         self.assertEqual(args, expected_args)
 
