@@ -1,8 +1,17 @@
 import subprocess
+import shutil
+
 from typing import Optional
 from .options import DittoOptions
 
+MISSING_DITTO_ERROR = (
+    "'ditto' command not found. Please ensure it is installed and available in PATH."
+)
+
 def run_ditto(args: list) -> None:
+    if shutil.which('ditto') is None:
+        raise FileNotFoundError(MISSING_DITTO_ERROR)
+
     cmd = ['ditto'] + args
     subprocess.run(cmd, check=True)
 

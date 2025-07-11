@@ -3,6 +3,13 @@ from unittest.mock import patch
 from pyditto.ditto import PyDitto, copy, archive, extract, DittoOptions
 
 class TestPyDitto(unittest.TestCase):
+    @patch('shutil.which', return_value=None)
+    def test_missing_ditto_command(self, mock_which):
+        from pyditto.ditto import MISSING_DITTO_ERROR
+        with self.assertRaises(FileNotFoundError) as ctx:
+            PyDitto.copy('src', 'dst')
+        self.assertIn(MISSING_DITTO_ERROR, str(ctx.exception))
+
     @patch('pyditto.ditto.run_ditto')
     def test_copy_default(self, mock_run):
         PyDitto.copy('src', 'dst')
