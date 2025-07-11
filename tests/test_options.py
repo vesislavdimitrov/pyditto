@@ -1,7 +1,21 @@
 import unittest
-from pyditto.options import DittoOptions
+from pyditto.options import DittoOptions, DittoOption
 
 class TestDittoOptions(unittest.TestCase):
+    def test_to_flag_fallback(self):
+        opt = DittoOption(42)
+        self.assertEqual(opt.to_flag('any'), [])
+
+    def test_flag_from_callable_fallback(self):
+        opt = DittoOption(lambda v: None)
+        self.assertEqual(opt.to_flag('any'), [])
+        opt2 = DittoOption(lambda v: 'notalist')
+        self.assertEqual(opt2.to_flag('any'), [])
+
+    def test_flag_from_dict_fallback(self):
+        opt = DittoOption({'aaa': 'bbb'})
+        self.assertEqual(opt.to_flag('zzz'), [])
+
     def test_default_flags(self):
         opts = DittoOptions()
         self.assertEqual(opts.to_flags(), [])
