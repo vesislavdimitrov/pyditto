@@ -11,19 +11,19 @@ Copy directory hierarchies, create and extract archives. Ditto can preserve owne
 
 ## Example Usage
 ```python
-from pyditto import copy, archive, extract
+from pyditto import copy, archive, extract, DittoOptions
 
 # Copy with all metadata
-copy('src', 'dst', preserve_rsrc=True, extattr=True, qtn=True, acl=True)
+copy('src', 'dst', DittoOptions(preserve_rsrc=True, extattr=True, qtn=True, acl=True, verbose=True))
 
 # Copy without resource forks or metadata
-copy('src', 'dst2', preserve_rsrc=False, extattr=False, qtn=False, acl=False)
+copy('src', 'dst2', DittoOptions(preserve_rsrc=False, extattr=False, qtn=False, acl=False, verbose=True))
 
 # Create a zip archive with max compression
-archive('src', 'archive.zip', zip_format=True, zlib_compression_level=9)
+archive('src', 'archive.zip', DittoOptions(zip_format=True, zlib_compression_level=9, verbose=True))
 
 # Extract a zip archive
-extract('archive.zip', 'dst')
+extract('archive.zip', 'dst', DittoOptions(zip_format=True, verbose=True))
 ```
 
 ## Options
