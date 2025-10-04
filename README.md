@@ -43,3 +43,6 @@ extract('archive.zip', 'dst')
 ## Requirements
 - macOS with `ditto` available in $PATH
 - Python 3.7+
+
+## Author
+Vesislav Dimitrov
